@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  app:
+    working_dir: /app
+    build:
+        context: .
+        dockerfile: ./deploy/Dockerfile-dev
+    container_name: microservice-app
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: mysql+pymysql://root:password@my_db
+  db:
+    image: mysql:8.4.0
+    container_name: microservice-db
+    ports:
+      - "33060:3306"
+    volumes:
+      - my-db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: my_db
+volumes:
+  my-db:
