@@ -3,22 +3,50 @@ package database
 import (
 	"database/sql"
 	_ "github.com/lib/pq" // Import the PostgreSQL driver
+	"log"
 	"time"
 )
 
-func Connect(dns string) (*sql.DB, error) {
+type DB struct {
+	*sql.DB
+}
+
+func Connect(dns string) (*DB, error) {
 	db, err := sql.Open("postgres", dns)
 	if err != nil {
 		return nil, err
 	}
 
-	db.SetMaxOpenConns(25)
-	db.SetMaxIdleConns(25)
+	db.SetMaxOpenConns(125)
+	db.SetMaxIdleConns(125)
 	db.SetConnMaxLifetime(5 * time.Minute)
 
 	if err := db.Ping(); err != nil {
 		return nil, err
 	}
 
-	return db, nil
+	return &DB{db}, nil
+}
+
+// Query logs the query and then executes it.
+func (db *DB) Query(query string, args ...interface{}) (*sql.Rows, error) {
+	//start := time.Now()
+	rows, err := db.DB.Query(query, args...)
+	//elapsed := time.Since(start)
+	//logQuery(query, args, elapsed, err)
+	return rows, err
+}
+
+// Exec logs the query and then executes it.
+func (db *DB) Exec(query string, args ...interface{}) (sql.Result, error) {
+	start := time.Now()
+	result, err := db.DB.Exec(query, args...)
+	elapsed := time.Since(start)
+	logQuery(query, args, elapsed, err)
+	return result, err
+}
+
+// logQuery logs the query details.
+func logQuery(query string, args []interface{}, elapsed time.Duration, err error) {
+	log.Printf("Query: %s\nArgs: %v\nDuration: %s\nError: %v\n", query, args, elapsed, err)
 }

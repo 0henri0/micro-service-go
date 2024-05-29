@@ -5,20 +5,20 @@ import (
 	"micro-service-go/internal/repositories"
 )
 
-type UserService interface {
-	GetUsers() ([]models.User, error)
+type OrderService interface {
+	GetOrders() ([]models.Order, error)
 }
 
-type userService struct {
-	userRepo repositories.UserRepository
+type orderService struct {
+	orderRepo repositories.OrderRepository
 }
 
-func NewUserService(userRepo repositories.UserRepository) UserService {
-	return &userService{
-		userRepo: userRepo,
+func NewOrderService(orderRepo repositories.OrderRepository) OrderService {
+	return &orderService{
+		orderRepo: orderRepo,
 	}
 }
 
-func (u userService) GetUsers() ([]models.User, error) {
-	return u.userRepo.GetUsers()
+func (u orderService) GetOrders() ([]models.Order, error) {
+	return u.orderRepo.GetOrders()
 }

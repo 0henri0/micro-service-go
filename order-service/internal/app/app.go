@@ -19,9 +19,9 @@ func Start() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	userRepo := repositories.NewUserRepository(db)
-	userService := services.NewUserService(userRepo)
-	userHandler := http.NewUserHandler(userService)
-	userRoute := http.NewUserRoute(userHandler)
-	userRoute.Run(":" + cfg.HttpPort)
+	orderRepo := repositories.NewOrderRepository(db)
+	orderService := services.NewOrderService(orderRepo)
+	orderHandler := http.NewOrderHandler(orderService)
+	route := http.NewUserRoute(orderHandler)
+	route.Run(":" + cfg.HttpPort)
 }

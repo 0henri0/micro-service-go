@@ -1,73 +1,73 @@
 services:
-  user_app:
-    working_dir: /app
-    build:
-      context: .
-      dockerfile: ./user-service/deploy/Dockerfile-dev
-    container_name: user-app
-    ports:
-      - "5001:5001"
-    volumes:
-      - ./user-service:/app
-    depends_on:
-      - user_db
-    environment:
-      - DATABASE_URL=postgres://user:password@user-db:5432/user_db?sslmode=disable
-      - HTTP_PORT=5001
-    networks:
-      - microservice-network
-  user_db:
-    container_name: user-db
-    image: 'postgres:16.1'
-    ports:
-      - '54320:5432'
-    restart: always
-    environment:
-      - 'POSTGRES_USER=user'
-      - 'POSTGRES_DB=user_db'
-      - 'POSTGRES_PASSWORD=password'
-      - 'TZ=Asia/Ho_Chi_Minh'
-    volumes:
-      - user_db:/var/lib/postgresql/data
-    networks:
-      - microservice-network
-  user_flyway:
-    container_name: user-flyway
-    image: 'flyway/flyway:7.14.0-alpine'
-    command: -url=jdbc:postgresql://user_db:5432/user_db -user=user -password=password migrate
-    volumes:
-      - ./user-service/internal/database/migrations:/flyway/sql
-    depends_on:
-      - user_db
-    networks:
-      - microservice-network
-
-  product_app:
-    working_dir: /app
-    build:
-      context: .
-      dockerfile: ./product-service/deploy/Dockerfile-dev
-    container_name: product-app
-    ports:
-      - "5002:5002"
-    volumes:
-      - ./product-service:/app
-    depends_on:
-      - product_db
-    environment:
-      - DATABASE_URL=postgres://product:password@product-db:5432/product_db?sslmode=disable
-      - HTTP_PORT=5002
-    networks:
-      - microservice-network
-  product_db:
-    container_name: product-db
-    image: 'mongo:latest'
-    ports:
-      - '27018:27017'
-    volumes:
-      - product-db:/data/db
-    networks:
-      - microservice-network
+#  user_app:
+#    working_dir: /app
+#    build:
+#      context: .
+#      dockerfile: ./user-service/deploy/Dockerfile-dev
+#    container_name: user-app
+#    ports:
+#      - "5001:5001"
+#    volumes:
+#      - ./user-service:/app
+#    depends_on:
+#      - user_db
+#    environment:
+#      - DATABASE_URL=postgres://user:password@user-db:5432/user_db?sslmode=disable
+#      - HTTP_PORT=5001
+#    networks:
+#      - microservice-network
+#  user_db:
+#    container_name: user-db
+#    image: 'postgres:16.1'
+#    ports:
+#      - '54320:5432'
+#    restart: always
+#    environment:
+#      - 'POSTGRES_USER=user'
+#      - 'POSTGRES_DB=user_db'
+#      - 'POSTGRES_PASSWORD=password'
+#      - 'TZ=Asia/Ho_Chi_Minh'
+#    volumes:
+#      - user_db:/var/lib/postgresql/data
+#    networks:
+#      - microservice-network
+#  user_flyway:
+#    container_name: user-flyway
+#    image: 'flyway/flyway:7.14.0-alpine'
+#    command: -url=jdbc:postgresql://user_db:5432/user_db -user=user -password=password migrate
+#    volumes:
+#      - ./user-service/internal/database/migrations:/flyway/sql
+#    depends_on:
+#      - user_db
+#    networks:
+#      - microservice-network
+#
+#  product_app:
+#    working_dir: /app
+#    build:
+#      context: .
+#      dockerfile: ./product-service/deploy/Dockerfile-dev
+#    container_name: product-app
+#    ports:
+#      - "5002:5002"
+#    volumes:
+#      - ./product-service:/app
+#    depends_on:
+#      - product_db
+#    environment:
+#      - DATABASE_URL=postgres://product:password@product-db:5432/product_db?sslmode=disable
+#      - HTTP_PORT=5002
+#    networks:
+#      - microservice-network
+#  product_db:
+#    container_name: product-db
+#    image: 'mongo:latest'
+#    ports:
+#      - '27018:27017'
+#    volumes:
+#      - product-db:/data/db
+#    networks:
+#      - microservice-network
 
   order_app:
     working_dir: /app
@@ -104,7 +104,7 @@ services:
   order_flyway:
     container_name: order-flyway
     image: 'flyway/flyway:7.14.0-alpine'
-    command: -url=jdbc:postgresql://order_db:5432/order_db -user=order -password=password migrate
+    command: -url=jdbc:postgresql://order_db:5432/order_db -user=user -password=password migrate
     volumes:
       - ./order-service/internal/database/migrations:/flyway/sql
     depends_on:
@@ -115,6 +115,6 @@ networks:
   microservice-network:
     driver: bridge
 volumes:
-  user_db:
-  product-db:
+#  user_db:
+#  product-db:
   order_db:

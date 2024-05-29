@@ -1,2 +1,2 @@
-DatabaseUrl: "postgres://user:password@user_db:5432/user_db?sslmode=disable"
-HttpPort: 5001
+DatabaseUrl: "postgres://user:password@localhost:54323/order_db?sslmode=disable"
+HttpPort: 5003

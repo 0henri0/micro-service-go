@@ -8,5 +8,5 @@ RUN go install github.com/cosmtrek/air@latest
 COPY user-service/go.mod user-service/go.sum ./
 RUN go mod download
 
-COPY user-service .
+COPY order-service .
 CMD ["air", "-c", ".air.toml"]
