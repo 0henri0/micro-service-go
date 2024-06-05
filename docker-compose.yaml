@@ -99,8 +99,10 @@ services:
       - 'TZ=Asia/Ho_Chi_Minh'
     volumes:
       - order_db:/var/lib/postgresql/data
+      - ./custom-postgresql.conf:/etc/postgresql/postgresql.conf
     networks:
       - microservice-network
+    command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
   order_flyway:
     container_name: order-flyway
     image: 'flyway/flyway:7.14.0-alpine'

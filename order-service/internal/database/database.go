@@ -2,9 +2,10 @@ package database
 
 import (
 	"database/sql"
-	_ "github.com/lib/pq" // Import the PostgreSQL driver
 	"log"
 	"time"
+
+	_ "github.com/lib/pq" // Import the PostgreSQL driver
 )
 
 type DB struct {
@@ -17,8 +18,8 @@ func Connect(dns string) (*DB, error) {
 		return nil, err
 	}
 
-	db.SetMaxOpenConns(125)
-	db.SetMaxIdleConns(125)
+	db.SetMaxOpenConns(5)
+	db.SetMaxIdleConns(5)
 	db.SetConnMaxLifetime(5 * time.Minute)
 
 	if err := db.Ping(); err != nil {

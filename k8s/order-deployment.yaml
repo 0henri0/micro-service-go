@@ -1,0 +1,126 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-deployment-master
+  labels:
+    app: order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: "megahost.1717385567"
+      containers:
+      - name: order
+        image: thainv1612/micro-service:latest
+        ports:
+        - containerPort: 5003
+        env:
+        - name: DATABASE_URL
+          value: "postgres://user:password@157.10.198.29:54323/order_db?sslmode=disable"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-deployment-slave1
+  labels:
+    app: order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: "thuevpsgiare-1717328218"
+      containers:
+      - name: order
+        image: thainv1612/micro-service:latest
+        ports:
+        - containerPort: 5003
+        env:
+        - name: DATABASE_URL
+          value: "postgres://user:password@103.245.237.8:54323/order_db?sslmode=disable"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-deployment-slave2
+  labels:
+    app: order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: "ctr1054281.novalocal"
+      containers:
+      - name: order
+        image: thainv1612/micro-service:latest
+        ports:
+        - containerPort: 5003
+        env:
+        - name: DATABASE_URL
+          value: "postgres://user:password@45.117.177.204:54323/order_db?sslmode=disable"
+
+---
+# Path: k8s/order-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+spec:
+  selector:
+    app: order
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5003
+      nodePort: 30007
+  type: NodePort
+
+---
+
+# Path: k8s/auto-scaler.yaml
+# kubectl delete -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+# apiVersion: autoscaling/v2
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: order-hpa
+# spec:
+#   scaleTargetRef:
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: order-deployment
+#   minReplicas: 2
+#   maxReplicas: 10
+#   metrics:
+#   - type: Resource
+#     resource:
+#       name: cpu
+#       target:
+#         type: Utilization
+#         averageUtilization: 60
+#   - type: Resource
+#     resource:
+#       name: memory
+#       target:
+#         type: Utilization
+#         averageUtilization: 60

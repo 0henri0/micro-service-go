@@ -1,12 +1,14 @@
 package http
 
 import (
-	"github.com/gin-gonic/gin"
 	"micro-service-go/internal/services"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func NewUserRoute(handle *OrderHandler) *gin.Engine {
+	gin.SetMode(gin.ReleaseMode)
 	route := gin.Default()
 	route.GET("/orders", handle.GetOrders)
 

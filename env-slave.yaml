@@ -1,0 +1,2 @@
+env:
+  DATABASE_URL: "postgres://user:password@103.245.237.8:54323/order_db?sslmode=disable"
