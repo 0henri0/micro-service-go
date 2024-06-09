@@ -42,32 +42,42 @@ services:
 #    networks:
 #      - microservice-network
 #
-#  product_app:
-#    working_dir: /app
-#    build:
-#      context: .
-#      dockerfile: ./product-service/deploy/Dockerfile-dev
-#    container_name: product-app
-#    ports:
-#      - "5002:5002"
-#    volumes:
-#      - ./product-service:/app
-#    depends_on:
-#      - product_db
-#    environment:
-#      - DATABASE_URL=postgres://product:password@product-db:5432/product_db?sslmode=disable
-#      - HTTP_PORT=5002
-#    networks:
-#      - microservice-network
-#  product_db:
-#    container_name: product-db
-#    image: 'mongo:latest'
-#    ports:
-#      - '27018:27017'
-#    volumes:
-#      - product-db:/data/db
-#    networks:
-#      - microservice-network
+  product_app:
+   working_dir: /app
+   build:
+     context: .
+     dockerfile: ./product-service/deploy/Dockerfile-dev
+   container_name: product-app
+   ports:
+     - "5002:5002"
+   volumes:
+     - ./product-service:/app
+   depends_on:
+     - product_db
+   environment:
+     - DATABASE_URL=postgres://product:password@product-db:5432/product_db?sslmode=disable
+     - HTTP_PORT=5002
+   networks:
+     - microservice-network
+  product_db:
+   container_name: product-db
+   image: 'mongo:latest'
+   ports:
+     - '27018:27017'
+   volumes:
+     - product-db:/data/db
+   networks:
+     - microservice-network
+  product_flyway:
+    container_name: product-flyway
+    image: 'flyway/flyway:7.14.0-alpine'
+    command: -url=jdbc:postgresql://product_db:5432/product_db -user=product -password=password migrate
+    volumes:
+      - ./product-service/internal/database/migrations:/flyway/sql
+    depends_on:
+      - product_db
+    networks:
+      - microservice-network
 
   order_app:
     working_dir: /app
@@ -118,5 +128,5 @@ networks:
     driver: bridge
 volumes:
 #  user_db:
-#  product-db:
+  product-db:
   order_db:
