@@ -13,6 +13,11 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        shopee: "#ee4d2d",
+        mint: "#088178",
+        mintLight: "#e8f6ea",
+      },
     },
   },
   plugins: [],
