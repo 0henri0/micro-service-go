@@ -4,7 +4,7 @@ CREATE TABLE products (
     description TEXT,
     slug VARCHAR(255) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    origin_url VARCHAR(255),
+    origin_url VARCHAR(255) UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -84,6 +84,13 @@ services:
       - product_db
     networks:
       - microservice-network
+  chromedp:
+    container_name: chromedp
+    image: 'chromedp/headless-shell:86.0.4240.198'
+    ports:
+      - '9222:9222'
+    networks:
+      - microservice-network
 
   order_app:
     working_dir: /app

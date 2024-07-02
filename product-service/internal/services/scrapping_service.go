@@ -31,11 +31,16 @@ func NewScrappingHtml() ScrappingHtml {
 
 func chromeDpContext() (context.Context, context.CancelFunc) {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.Flag("headless", true),
+		chromedp.Flag("headless", false),
 		chromedp.Flag("start-fullscreen", false),
 		chromedp.Flag("enable-automation", false),
 		chromedp.Flag("disable-extensions", false),
+		chromedp.NoFirstRun,
+		chromedp.NoDefaultBrowserCheck,
+		chromedp.Flag("disable-dev-shm-usage", true),
+		chromedp.Flag("disable-gpu", true),
 	)
+	//browserURL := flag.String("url", "ws://localhost:9222", "devtools url")
 	ctxWithTimeout, _ := context.WithTimeout(context.Background(), time.Second*50)
 	initialCtx, _ := chromedp.NewExecAllocator(ctxWithTimeout, opts...)
 	ctx, cancel := chromedp.NewContext(initialCtx, chromedp.WithLogf(log.Printf))

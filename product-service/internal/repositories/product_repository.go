@@ -1,10 +1,10 @@
 package repositories
 
 import (
-	"database/sql"
 	"fmt"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"micro-service-go/internal/models"
-	"strings"
 )
 
 type ProductRepository interface {
@@ -12,30 +12,28 @@ type ProductRepository interface {
 }
 
 type productRepository struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
 func (p productRepository) SaveProducts(products []models.Product) error {
-	query := `INSERT INTO products (name, price, origin_url, slug) VALUES `
-	var values []interface{}
-	for _, product := range products {
-		query += fmt.Sprintf("('%s', '%d', '%s', '%s'),", product.Name, product.Price, product.OriginUrl, product.OriginUrl)
-		values = append(values, product.Name, product.Price, product.OriginUrl)
+	if len(products) == 0 {
+		return nil
 	}
-	query = query[:len(query)-1]
-	query = strings.Trim(query, ",")
-	stmt, err := p.db.Prepare(query)
-	if err != nil {
-		return err
+
+	result := p.db.Clauses(clause.OnConflict{
+		Columns:   []clause.Column{{Name: "origin_url"}},
+		DoNothing: true,
+	}).Create(&products)
+
+	if result.Error != nil {
+		return result.Error
 	}
-	_, err = stmt.Exec()
-	if err != nil {
-		return err
-	}
+
+	fmt.Println("Insert completed")
 	return nil
 }
 
-func NewProductRepository(db *sql.DB) ProductRepository {
+func NewProductRepository(db *gorm.DB) ProductRepository {
 	return &productRepository{
 		db: db,
 	}

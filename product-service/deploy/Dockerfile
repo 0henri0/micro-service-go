@@ -4,7 +4,6 @@ WORKDIR /app
 # Download dependencies
 COPY go.mod go.sum ./
 RUN go mod download
-
 # Add source code
 COPY . .
 
@@ -16,7 +15,6 @@ RUN go build -o main cmd/main.go
 # Multi-Stage production build
 FROM alpine AS production
 RUN apk --no-cache add ca-certificates
-
 WORKDIR /app
 # Retrieve the binary from the previous stage
 COPY --from=builder /app/main .
