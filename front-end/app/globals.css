@@ -1,3 +1,41 @@
+/* styles/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html,
+body,
+#__next {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes move {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-1rem);
+  }
+}
+
+.animate-move {
+  animation: move 0.5s infinite alternate;
+}
+
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
+}
+
+.delay-400 {
+  animation-delay: 0.4s;
+}

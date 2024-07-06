@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef } from "react";
+import React from "react";
 
 import { Navigation, Pagination, EffectFade } from "swiper/modules";
-import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
@@ -17,9 +17,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const Carousel: React.FC = () => {
-  const prevRef = useRef<HTMLButtonElement>(null);
-  const nextRef = useRef<HTMLButtonElement>(null);
-
   return (
     <div className="w-full mt-8">
       <Swiper
@@ -57,13 +54,13 @@ const Carousel: React.FC = () => {
           />
         </SwiperSlide>
         {/* Add more slides as needed */}
-        <div className="slider-arrow absolute top-1/2 z-10 left-0 w-full flex justify-between text-mint">
-          <span className=" ml-5 prev cursor-pointer bg-mintLight h-11 w-11 rounded-full flex items-center justify-center hover:bg-mint hover:text-white">
+        <div className="slider-arrow absolute top-[45%] z-10 left-0 w-full flex justify-between text-mint">
+          <button aria-label="prev" type="button" className=" ml-5 prev cursor-pointer bg-mintLight h-11 w-11 rounded-full flex items-center justify-center hover:bg-mint hover:text-white">
             <FontAwesomeIcon icon={faChevronLeft} />
-          </span>
-          <span className="mr-5 next cursor-pointer bg-mintLight h-11 w-11 rounded-full flex items-center justify-center hover:bg-mint hover:text-white">
+          </button>
+          <button aria-label="next" type="button" className="mr-5 next cursor-pointer bg-mintLight h-11 w-11 rounded-full flex items-center justify-center hover:bg-mint hover:text-white">
             <FontAwesomeIcon icon={faChevronRight} />
-          </span>
+          </button>
         </div>
       </Swiper>
     </div>
