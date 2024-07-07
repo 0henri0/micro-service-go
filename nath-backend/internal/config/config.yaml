@@ -1,7 +1,7 @@
-DatabaseUrl: "postgres://user:password@192.168.1.9:54322/product_db?sslmode=disable"
-HttpPort: 3306
+DatabaseUrl: "nathstore:Thaicutevodoi123@@tcp(45.117.177.204:3306)/nathstore?charset=utf8&parseTime=True&loc=Local"
+HttpPort: 8081
 
 
-gorm:gorm@tcp(103.159.51.238:3306)/gorm?charset=utf8&parseTime=True&loc=Local
+# nathstore:Thaicutevodoi123@@tcp(45.117.177.204:3306)/nathstore?charset=utf8&parseTime=True&loc=Local
 
-"username:password@protocol(address)/dbname?param=value",
+# "username:password@protocol(address)/dbname?param=value",
